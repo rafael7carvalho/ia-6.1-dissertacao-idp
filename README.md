@@ -1,169 +1,37 @@
-# TemplateLatexIDP
+# ia-6.1: esqueleto didático de dissertação
 
-Template LaTeX para **monografias, TCCs, dissertações e teses** do
-**Instituto Brasileiro de Ensino, Desenvolvimento e Pesquisa — IDP**.
+Autor: Rafael Carvalho dos Santos. Programa: Mestrado Profissional em Administração Pública, IDP.
 
-Reproduz a formatação do arquivo oficial
-[`templateMonografia_ou_TCC.pdf`](https://www.idp.edu.br/arquivos/biblioteca/templateMonografia_ou_TCC.pdf)
-(Biblioteca Ministro Moreira Alves) e implementa as normas da ABNT para
-referências e citações.
+Este projeto deriva de `alexlopespereira/TemplateLatexIDP`. O conteúdo personalizado é um exercício da disciplina Agentes de IA baseado no Pré-Projeto 4 de “A política dos números”. Não é dissertação concluída, não contém resultados empíricos e não altera o documento original do projeto.
 
-> 📘 **É a sua primeira vez?** Leia o **[TUTORIAL.md](TUTORIAL.md)** — ele explica
-> o passo a passo, inclusive como escrever a dissertação com o apoio do
-> **Claude Code** ou do **Codex**.
+## Entrega para revisão
 
----
+- `main.pdf`: 13 páginas, compiladas localmente a partir das fontes personalizadas.
+- `config/dados.tex`: título e autoria reais; orientação, defesa e catalogação não foram inventadas.
+- `capitulos/`: cinco capítulos, cada um com dois parágrafos autorais, além dos elementos demonstrativos.
+- `pretextual/resumo.tex` e `abstract.tex`: resumos equivalentes do desenho proposto, sem resultados fabricados.
+- Figura e tabela com legendas, fontes, rótulos próprios e chamadas no texto. A tabela contém parâmetros do recorte, não observações simuladas da pesquisa.
+- `referencias.bib`: três obras acadêmicas verificadas e uma entrada adicional do documento autoral fornecido, usado na citação longa.
+- `VERIFICACAO-REFERENCIAS.md`: fontes externas e limites da verificação.
 
-## O que já está pronto
+Ficha catalográfica, aprovação, dedicatória, agradecimentos, epígrafe e anexos de exemplo não são incluídos no PDF. Os arquivos opcionais originais do template permanecem como material de origem, sem participação no texto compilado.
 
-| Elemento | Situação |
-|---|---|
-| Capa com logo do IDP | ✅ |
-| Folha de rosto | ✅ |
-| Ficha catalográfica | ✅ |
-| Folha de aprovação (banca) | ✅ |
-| Dedicatória, agradecimentos, epígrafe | ✅ |
-| Resumo e *abstract* (NBR 6028) | ✅ |
-| Listas de ilustrações, tabelas, quadros, gráficos e siglas | ✅ (automáticas) |
-| Sumário (NBR 6027) | ✅ (automático) |
-| Numeração progressiva das seções (NBR 6024) | ✅ |
-| Citações diretas e indiretas (NBR 10520) | ✅ |
-| Referências (NBR 6023) via `biblatex-abnt` | ✅ |
-| Apêndices e anexos | ✅ |
+## Compilação efetivamente realizada
 
-## Formatação implementada
-
-Todos os valores abaixo foram **medidos no PDF oficial do IDP** e reproduzidos
-na classe `idp.cls`:
-
-| Item | Valor |
-|---|---|
-| Papel | A4 (210 × 297 mm) |
-| Margens | esquerda 3 cm · direita 2 cm · superior 3 cm · inferior 2 cm |
-| Fonte | Times New Roman 12 (via `newtx`, metricamente idêntica) |
-| Entrelinhas | 1,5 no texto; simples em resumo, citações longas, notas e referências |
-| Recuo de parágrafo | 1,25 cm |
-| Numeração de páginas | canto superior direito, a 2 cm da borda; contagem começa na folha de rosto e só aparece a partir da introdução |
-| Seção primária | `1 TÍTULO` — caixa alta + negrito, em folha nova |
-| Seção secundária | `1.1 Título` — negrito |
-| Seção terciária | `1.1.1 Título` — sem destaque |
-| Citação longa (> 3 linhas) | recuo 4 cm, corpo 10, entrelinha simples, sem aspas |
-| Notas de rodapé | corpo 10, entrelinha simples |
-| Legendas e “Fonte:” | corpo 10, centralizadas; legenda **acima**, fonte **abaixo** |
-
-## Estrutura do repositório
-
-```
-TemplateLatexIDP/
-├── idp.cls                 ← a classe LaTeX (o coração do template)
-├── main.tex                ← documento principal: só inclui os outros arquivos
-├── referencias.bib         ← sua bibliografia (formato BibTeX)
-├── config/
-│   └── dados.tex           ← autor, título, orientador, banca, palavras-chave…
-├── pretextual/
-│   ├── dedicatoria.tex     agradecimentos.tex   epigrafe.tex
-│   └── resumo.tex          abstract.tex         siglas.tex
-├── capitulos/
-│   ├── 01-introducao.tex
-│   ├── 02-referencial-teorico.tex
-│   ├── 03-procedimentos-metodologicos.tex
-│   ├── 04-analise-e-discussao.tex
-│   └── 05-consideracoes-finais.tex
-├── postextual/
-│   ├── apendices.tex
-│   └── anexos.tex
-├── figuras/                ← suas imagens (+ logo do IDP)
-├── CLAUDE.md / AGENTS.md   ← instruções para o Claude Code / Codex
-├── TUTORIAL.md             ← guia completo para o aluno
-└── templateMonografia_ou_TCC.pdf   ← PDF oficial, para conferência
+```text
+latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 ```
 
-## Como compilar
+Foi usada uma distribuição TeX Live 2026 portátil, fora do repositório, com os pacotes necessários. O caminho da ferramenta foi acrescentado somente ao PATH do processo de compilação, sem instalação global.
 
-```bash
-latexmk -pdf main.tex      # gera main.pdf
-latexmk -c                 # limpa arquivos auxiliares
-```
+O Biber fornecido nessa distribuição não iniciou no Windows, com erro de realocação de DLL. O backend BibTeX simples também não atendia à exigência do estilo biblatex-abnt. A adaptação final substitui somente o bloco de bibliografia da classe por abntex2cite, carregado após hyperref, mantendo o restante da estrutura visual do IDP. A alteração está identificada em idp.cls. Usa-se o estilo autor-data do abnTeX2; não se afirma identidade entre todas as opções bibliográficas dos dois pacotes.
 
-Requer uma distribuição LaTeX (MiKTeX, TeX Live ou MacTeX) com `biber`.
-Veja a instalação passo a passo no [TUTORIAL.md](TUTORIAL.md#1-preparando-o-ambiente).
+O fluxo concluído foi pdflatex, BibTeX e novas passadas de pdflatex, automatizadas por latexmk. O arquivo .bbl foi gerado pelo BibTeX, não escrito manualmente. O latexmk terminou com código zero e informou todos os alvos atualizados. O log final não contém erros LaTeX nem referências ou citações indefinidas. A alternativa BibTeX é expressamente admitida na rubrica da reflexão do ia-6.1.
 
-## Escolhendo o tipo de trabalho
+A tentativa pelo compilador integrado do aplicativo não foi usada como prova de sucesso: ela falhou durante a preparação, com fontes alteradas ao longo da tentativa. A evidência de sucesso é a compilação local final.
 
-A opção da classe em `main.tex` define automaticamente o texto da natureza do
-trabalho na folha de rosto e na folha de aprovação:
+## Estado atual
 
-```latex
-\documentclass[bacharelado]{idp}     % monografia / TCC de graduação
-\documentclass[especializacao]{idp}  % pós-graduação lato sensu
-\documentclass[mestrado]{idp}        % dissertação
-\documentclass[doutorado]{idp}       % tese
-```
+Material revisado e publicação autorizada pelo participante. Fork público criado em https://github.com/rafael7carvalho/ia-6.1-dissertacao-idp, derivado do template original. As fontes e o PDF deste commit constituem a entrega aprovada. A avaliação e a submissão ao autograde ainda não foram executadas.
 
-Outras opções combináveis:
-
-| Opção | Efeito |
-|---|---|
-| `secaonovapagina` | *(padrão)* cada seção primária começa em folha nova |
-| `secaocontinua` | seções primárias seguem na mesma página |
-| `semlinks` | *(padrão)* hiperlinks sem cor, adequados para impressão |
-| `links` | hiperlinks coloridos, úteis na versão digital |
-| `rascunho` | marca d'água “RASCUNHO” |
-| `refautorrepetido` | repete o nome do autor nas referências, em vez do travessão |
-| `entrega` | aborta a compilação se algum campo obrigatório estiver em branco |
-
-## Os dados do trabalho
-
-`config/dados.tex` é a **fonte única da verdade**: cada dado é digitado uma vez
-e alimenta capa, folha de rosto, ficha catalográfica, folha de aprovação e os
-metadados do PDF.
-
-```latex
-\titulo{A eficácia horizontal dos direitos fundamentais}
-\subtitulo{uma análise da jurisprudência do STF}
-\autor{Maria Aparecida de Souza}
-\autorficha{SOUZA, Maria Aparecida de}
-\orientador{Prof. Dr. João Carlos Pereira}
-\programa{Direito Constitucional}
-\area{Direitos Fundamentais}
-\linhapesquisa{Jurisdição constitucional}
-\cidade{Brasília}
-\datadefesa{15 de dezembro de 2026}          % só a data; a cidade vem de \cidade
-\membrobanca[UnB]{Prof. Dr. Pedro Rocha}{Examinador}   % instituição é opcional
-```
-
-Campos disponíveis: `\titulo` `\subtitulo` `\titulotraduzido` `\autor`
-`\autorficha` `\orientador` `\coorientador` `\curso` `\programa` `\area`
-`\linhapesquisa` `\cidade` `\local` `\data` `\datadefesa` `\datadefesacompleta`
-`\membrobanca` `\palavraschave` `\keywords` `\cutter` `\numeropaginas` `\cdd`
-`\assuntos` `\tipotrabalho` `\preambulo` `\instituicao` `\logo` `\semlogo`.
-
-### Reaproveite os dados no texto
-
-Em vez de redigitar um nome no corpo do trabalho, use o acessor — o texto
-acompanha qualquer mudança em `dados.tex`:
-
-```latex
-Ao meu orientador, \NomeOrientador, agradeço a paciência e o rigor.
-```
-
-`\TituloTrabalho` `\SubtituloTrabalho` `\TituloTraduzido` `\NomeAutor`
-`\NomeOrientador` `\NomeCoorientador` `\NomeCurso` `\NomePrograma`
-`\NomeInstituicao` `\AreaConcentracao` `\LinhaPesquisa` `\LocalTrabalho`
-`\CidadeTrabalho` `\AnoTrabalho`.
-
-### Nada de `XXXX` na versão entregue
-
-Campo obrigatório em branco aparece no PDF como `[[ PREENCHER: cdd ]]` e gera
-aviso nomeando o campo. Na versão final, compile com a opção `entrega`: o aviso
-vira erro e **nenhum PDF é gerado** enquanto houver pendência.
-
-```latex
-\documentclass[mestrado,entrega]{idp}
-```
-
-## Licença
-
-Os arquivos da classe estão sob [LPPL 1.3c](LICENSE); o conteúdo de exemplo é
-de domínio público. O PDF oficial do IDP e o logotipo pertencem ao IDP e estão
-incluídos apenas para referência e uso pelos seus alunos.
+O Pré-Projeto original, suas versões Word/PDF e materiais privados não integram esta entrega. A citação longa reproduz somente o trecho identificado na seção de referências, sujeito à revisão do autor antes da publicação.

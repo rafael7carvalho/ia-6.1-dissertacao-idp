@@ -825,52 +825,18 @@
 %%     - autor repetido substituido por travessao
 %%     - espacamento simples, alinhadas a esquerda, separadas por uma linha
 %%-----------------------------------------------------------------------------
-\RequirePackage[autostyle=true]{csquotes}
-\RequirePackage[backend=biber,
-                style=abnt,
-                sorting=nyt,        % ordem alfabetica: nome, titulo, ano
-                maxbibnames=99,     % NBR 6023: lista todos os autores
-                minbibnames=99,
-                maxcitenames=3,     % 4 ou mais autores -> "et al." na citacao
-                mincitenames=1,
-                giveninits=false,   % nomes por extenso (padrao do IDP)
-                usedashes=true,     % autor repetido -> travessao (______.)
-                repeatfields=false,
-                accite=true,        % NBR 10520: autor em CAIXA ALTA entre parenteses
-                ittitles=false,     % titulo em NEGRITO (como no template do IDP)
-                natbib=true         % habilita \citeonline, \citet, \citep
-               ]{biblatex}
-
-\defbibheading{idpbib}[\refname]{}
-\setlength{\bibitemsep}{\idplinhasimp}
-\setlength{\bibhang}{0pt}
-
-% Autor repetido: travessao no formato do template do IDP ("_______.").
-% Com a opcao de classe `refautorrepetido' o nome e repetido por extenso,
-% como determina a NBR 6023:2018.
-\AtBeginDocument{%
-  \ifidp@autorrepetido
-    \ExecuteBibliographyOptions{usedashes=false}%
-  \else
-    \renewcommand*{\bibnameunderscore}{\underline{\hspace*{3.7em}}}%
-    \renewcommand*{\bibnamedash}{\bibnameunderscore\addperiod\addspace}%
-  \fi
-}
-
+% Adaptacao didatica ia-6.1: backend BibTeX com abntex2cite.
+% Motivo: Biber nao iniciou neste ambiente Windows. Demais secoes preservadas.
+% Classe original: https://github.com/alexlopespereira/TemplateLatexIDP
 \newcommand{\referencias}{%
   \clearpage
   \idpaddtoc{REFER\^ENCIAS}%
-  {\centering\normalfont\normalsize\bfseries REFER\^ENCIAS\par}%
-  \vspace{\idplinha}%
   \begingroup
-    \espacosimples
-    \raggedright
-    \printbibliography[heading=idpbib]%
+  \espacosimples
+  \raggedright
+  \bibliography{referencias}%
   \endgroup
 }
-
-% Aliases de citacao no estilo abntex2
-\newcommand{\citeonline}[2][]{\textcite[#1]{#2}}
 \newcommand{\citacaodireta}[3][]{(\textsc{#2}, #3)}
 
 %%-----------------------------------------------------------------------------
@@ -885,6 +851,9 @@
 \fi
 \RequirePackage{url}
 \urlstyle{same}
+% abntex2cite precisa ser carregado depois de hyperref.
+\RequirePackage[alf,abnt-emphasize=bf,abnt-full-initials=yes]{abntex2cite}
+\providecommand{\bibname}{Refer\^encias}
 
 % Rede de seguranca: comandos da classe que porventura cheguem a um PDF string
 % (bookmarks, \pdftitle, \pdfauthor) sao neutralizados aqui, em vez de

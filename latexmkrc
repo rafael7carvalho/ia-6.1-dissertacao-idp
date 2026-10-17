@@ -4,7 +4,7 @@
 $pdf_mode = 1;              # pdflatex
 $bibtex_use = 2;
 $biber = 'biber --input-encoding=utf8 --output-encoding=utf8 %O %S';
-$pdflatex = 'pdflatex -interaction=nonstopmode -synctex=1 -file-line-error %O %S';
+$pdflatex = 'pdflatex -no-shell-escape -interaction=nonstopmode -synctex=1 -file-line-error %O %S';
 
 # Extensoes geradas pelas listas personalizadas (quadros e graficos)
 push @generated_exts, 'loq', 'lgr', 'lof', 'lot', 'bcf', 'run.xml', 'synctex.gz';
